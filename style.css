@@ -14,7 +14,7 @@
 }
 
 head{
-  font-family: fantasy;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 /* =========================
    BASE
@@ -38,20 +38,27 @@ main{
 /* =========================
    HEADER
 ========================= */
+/* HEADER */
 .hero{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
   border-bottom: 1px solid var(--border);
   padding: 56px 20px 32px;
-  text-align: center;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
-.hero h1{
+.hero-text h1{
   font-style: italic;
   font-family: "Roboto", system-ui, sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -0.02em;
 }
 
-.hero p{
+.hero-text p{
   margin-top: 10px;
   color: var(--muted);
   font-size: 1.05rem;
@@ -62,11 +69,9 @@ main{
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  display: block;
-  margin: 16px auto;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.03);
+  flex-shrink: 0; /* empêche l’image de rétrécir */
 }
+
 
 /* =========================
    SECTIONS (général)
