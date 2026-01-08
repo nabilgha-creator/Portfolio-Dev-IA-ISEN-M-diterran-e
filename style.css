@@ -48,6 +48,16 @@ header p{
   font-size: 1.05rem;
 }
 
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 16px auto;
+}
+
+
 /* SECTIONS */
 section{
   margin-top: 34px;
