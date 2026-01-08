@@ -38,19 +38,19 @@ Projets :
 
 Compétences: 
 
-- ETL (Extract,Transfert,Load) :
-       Python : 
+- **ETL (Extract,Transfert,Load)**
+       **Python :** 
             - Pandas 
             - Numpy 
             - BeautifulSoup4 
             - CSV 
-            - Request 
-- Visualisation : 
-      -Python : 
+            - Requests
+- **Visualisation** 
+      **-Python :** 
             - Matplotlib
             - Seaborn
-      -Excel
-- Web : 
+      **-Excel**
+- **Web**  
       HTML 
       CSS3
 
