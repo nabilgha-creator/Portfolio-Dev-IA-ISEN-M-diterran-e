@@ -1,5 +1,5 @@
 /* =========================
-   RESET + THEME
+THEME
 ========================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -72,6 +72,10 @@ main{
   flex-shrink: 0; /* empêche l’image de rétrécir */
 }
 
+h1:hover{ 
+  background-color: #0a448a;
+
+}
 
 /* =========================
    SECTIONS (général)
