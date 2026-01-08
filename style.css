@@ -72,9 +72,12 @@ main{
   flex-shrink: 0; /* empêche l’image de rétrécir */
 }
 
-h1:hover{ 
+h1:hover, h2:hover{ 
   text-shadow:  0 0 10px #0a448a;
+}
 
+h1,h2{
+  transition: text-shadow 0.3s ease;
 }
 
 /* =========================
