@@ -15,7 +15,7 @@ J'ai deja eu des longues h d'utilisation de chatGPT, copilot ou deepseek que ce 
 
 Projets : 
 
-IDE : VSCode: 
+
 
 1- Analyse d'un dataset de 100K de vols (BDD d'entrainement trouvé sur Kaggle): Technologie utilisé: Windows 11 , VScode, ChatGpt
       -Langage : Python - Le langage de base dans le traitement de données et de l'IA 
@@ -35,8 +35,28 @@ IDE : VSCode:
                     - Bibliothèques principales : Requests , BeautifulSoup, CSV
                           - Extraction de données sur page wikipedia -> crétion de dataset csv
                           - Création de gestionnaire de tâches, simulateur de guichet bancaire..etc
+
+Compétences: 
+
+- ETL (Extract,Transfert,Load) :
+       Python : 
+            - Pandas 
+            - Numpy 
+            - BeautifulSoup4 
+            - CSV 
+            - Request 
+- Visualisation : 
+      Python : 
+            - Matplotlib
+            - Seaborn
+      Excel
+- Web : 
+      HTML 
+      CSS3
+
+
                           
-Ovjectifs : 
+Objectifs : 
 
 Ce portfolio a pour objectifs de faire un suivi et une publication de nos divers travaux a l'isen dans le cadre de notre recherche d'alternance. 
 N'hésitez pas a me retrouver sur LinkedIn sur le lien : 
