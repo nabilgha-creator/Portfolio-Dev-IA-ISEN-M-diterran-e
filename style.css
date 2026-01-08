@@ -72,8 +72,12 @@ main{
   flex-shrink: 0; /* empêche l’image de rétrécir */
 }
 
-h1:hover, h2:hover{ 
+h1:hover{ 
   text-shadow:  0 0 20px #0a448a;
+}
+
+h2:hover{
+  text-shadow: 0 0 30px white;
 }
 
 h1,h2{
