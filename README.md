@@ -46,10 +46,10 @@ Compétences:
             - CSV 
             - Request 
 - Visualisation : 
-      Python : 
+      -Python : 
             - Matplotlib
             - Seaborn
-      Excel
+      -Excel
 - Web : 
       HTML 
       CSS3
