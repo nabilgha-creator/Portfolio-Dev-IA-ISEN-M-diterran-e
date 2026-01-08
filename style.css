@@ -19,8 +19,8 @@ THEME
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background:
-    radial-gradient(1000px 600px at 20% 0%, rgba(96,165,250,.18), transparent 60%),
-    radial-gradient(900px 600px at 80% 10%, rgba(34,197,94,.12), transparent 55%),
+    radial-gradient(1000px 600px at 20% 0%, rgba(8, 86, 180, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 80% 10%, rgba(20, 206, 88, 0.12), transparent 55%),
     var(--bg);
   color: var(--text);
   line-height: 1.6;
