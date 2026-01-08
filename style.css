@@ -208,6 +208,25 @@ a{
   font-weight: 700;
 }
 
+.contact-links{
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.contact-links img{
+  width: 36px;      /* taille des logos */
+  height: auto;
+  opacity: 0.85;
+  transition: 0.2s;
+}
+
+.contact-links img:hover{
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+
 a:hover{
   background: rgba(96,165,250,.18);
 }
