@@ -54,6 +54,34 @@ section{
   padding-top: 10px;
 }
 
+/* reset listes */
+.skills, .skills ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* catégories (Python, Data Viz, etc.) */
+.skills > li {
+  margin: 12px 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+}
+
+/* sous-liste (Pandas, Numpy, ...) */
+.skills > li > ul {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+/* items sous-liste */
+.skills > li > ul > li {
+  margin: 6px 0;
+  padding-left: 10px;
+  border-left: 2px solid rgba(255,255,255,0.18);
+}
+
 section h2{
   font-size: 1.35rem;
   margin-bottom: 14px;
