@@ -1,6 +1,7 @@
 /* RESET */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+
 :root{
   --bg: #0b0f19;
   --surface: #111827;
@@ -35,6 +36,7 @@ header{
 }
 
 header h1{
+    font-family:"Roboto", sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -0.02em;
 }
