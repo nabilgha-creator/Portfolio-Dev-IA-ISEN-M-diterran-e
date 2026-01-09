@@ -343,7 +343,8 @@ if (form) {
       return;
     }
 
-    // succès (pas d'envoi backend)
+    // succès 
+    
     setMsg("Message envoyé ✅.", "is-success");
 
     // “reset” optionnel
