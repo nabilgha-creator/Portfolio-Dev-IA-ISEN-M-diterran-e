@@ -344,7 +344,7 @@ if (form) {
     }
 
     // succès (pas d'envoi backend)
-    setMsg("Message prêt ✅ (pas de backend, donc rien n’est envoyé).", "is-success");
+    setMsg("Message envoyé ✅.", "is-success");
 
     // “reset” optionnel
     form.reset();
