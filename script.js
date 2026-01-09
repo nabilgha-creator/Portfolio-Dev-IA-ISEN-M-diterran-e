@@ -112,22 +112,25 @@
     ...$$(".contact-links a"),        // icônes contact
   ];
 
-  if ("IntersectionObserver" in window && revealTargets.length) {
-    revealTargets.forEach((el) => el.classList.add("js-reveal"));
+ if ("IntersectionObserver" in window && revealTargets.length) {
+  revealTargets.forEach((el) => el.classList.add("js-reveal"));
 
-    const io = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
-          obs.unobserve(entry.target);
-        });
-      },
-      { threshold: 0.12 }
-    );
+        } else {
+          entry.target.classList.remove("is-visible"); // <-- permet de rejouer
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
 
-    revealTargets.forEach((el) => io.observe(el));
-  }
+  revealTargets.forEach((el) => io.observe(el));
+}
+
 
   // --- Rendre les articles projets cliquables (OPTIONNEL)
   // Ajoute data-url sur tes <article> :
