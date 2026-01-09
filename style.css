@@ -196,8 +196,6 @@ section p{
   background: rgba(255,255,255,.03);
 }
 
-/* Compatibilité navigateurs (si :has ne marche pas)
-   -> tu peux ignorer, ça reste OK visuellement */
 
 /* =========================
    LIENS (bouton)
@@ -215,6 +213,16 @@ a{
   text-decoration: none;
   font-weight: 700;
 }
+
+.nav-links{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.nav-links a{
+  margin-top:0;
+}
+
 
 .contact-links{
   display: flex;
