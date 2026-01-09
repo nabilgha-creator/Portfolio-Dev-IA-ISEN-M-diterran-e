@@ -57,6 +57,13 @@
     <section  class="projects" id="projects">
       <h2>Projets</h2>
 
+       <div class="project-filters" role="tablist" aria-label="Filtrer les projets">
+    <button class="filter-btn is-active" type="button" data-filter="all">Tous</button>
+    <button class="filter-btn" type="button" data-filter="data">Data</button>
+    <button class="filter-btn" type="button" data-filter="web">Web</button>
+    <button class="filter-btn" type="button" data-filter="ia">IA</button>
+     </div>
+
       <article data-url="https://github.com/nabilgha-creator">
         <h3>Analyse ETL – Dataset</h3>
         <p>Extraction,Nettoyage, Transformation et Visualisation de données. <br>
@@ -103,6 +110,29 @@
    
     <section id="contact">
         <h2>Contact</h2>
+        
+        <!--formulaire-->
+        <form id="contactForm" class="contact-form" novalidate>
+    <label>
+      Nom
+      <input type="text" name="name" placeholder="Ton nom" required minlength="2">
+    </label>
+
+    <label>
+      Email
+      <input type="email" name="email" placeholder="ton@email.com" required>
+    </label>
+
+    <label>
+      Message
+      <textarea name="message" rows="5" placeholder="Ton message..." required minlength="10"></textarea>
+    </label>
+
+    <button type="submit">Envoyer</button>
+
+    <!-- zone de retour -->
+    <p id="formMsg" class="form-msg" aria-live="polite"></p>
+  </form>
 
         <div class="contact-links">
             <a href="https://www.linkedin.com/in/nabilgha" target="_blank">

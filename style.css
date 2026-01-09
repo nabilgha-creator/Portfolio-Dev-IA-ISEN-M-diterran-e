@@ -392,3 +392,93 @@ desktop uniquement
     background: rgba(255,255,255,.08);
   }
 }
+
+
+.project-filters{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 16px;
+}
+
+/* boutons filtres: on ne veut pas le style global des <a> */
+.filter-btn{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.filter-btn:hover{
+  background: rgba(255,255,255,.06);
+}
+
+.filter-btn.is-active{
+  border-color: rgba(96,165,250,.55);
+  background: rgba(96,165,250,.16);
+}
+
+/* Projet sélectionné */
+.projects article.is-selected{
+  outline: 2px solid rgba(96,165,250,.55);
+  outline-offset: 2px;
+}
+
+/* Formulaire */
+
+.contact-form{
+  margin-top: 10px;
+  max-width: 520px;
+  display: grid;
+  gap: 12px;
+}
+
+.contact-form label{
+  display: grid;
+  gap: 6px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus{
+  outline: 2px solid rgba(96,165,250,.45);
+  outline-offset: 2px;
+}
+
+.contact-form button{
+  border: 1px solid var(--border);
+  background: rgba(96,165,250,.16);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.contact-form button:hover{
+  background: rgba(96,165,250,.22);
+}
+
+.form-msg{
+  min-height: 1.2em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.form-msg.is-error{ color: #fca5a5; }
+.form-msg.is-success{ color: #86efac; }
+

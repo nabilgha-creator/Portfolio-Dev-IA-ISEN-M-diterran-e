@@ -1,12 +1,3 @@
-/* script.js — adapté à ton HTML (Portfolio Nabil)
-   - Reveal au scroll (sections, projets, skills)
-   - Cartes projets cliquables (si on met data-url sur <article>)
-   - Bouton "Retour en haut"
-   - Toast (petite notif)
-   - Année auto dans le footer (si tu mets <span data-year>)
-   - Respecte ton HTML actuel (ne casse pas si un élément n'existe pas)
-*/
-
 (() => {
   "use strict";
 
@@ -96,12 +87,12 @@
     toastTimer = setTimeout(() => toast.classList.remove("is-on"), 1400);
   };
 
-  // --- Année auto (OPTIONNEL)
+  // --- Année auto 
   // Si tu mets <span data-year></span> dans ton footer
   const yearTarget = $("[data-year]");
   if (yearTarget) yearTarget.textContent = String(new Date().getFullYear());
 
-  // --- Reveal au scroll (adapté à ton HTML)
+  // --- Reveal au scroll 
   // Tes sections : <main> contient plusieurs <section>
   // Projets : <section class="projects"> avec <article>
   // Compétences : <section class="skills-section"> avec <ul class="skills"> etc.
@@ -132,7 +123,7 @@
 }
 
 
-  // --- Rendre les articles projets cliquables (OPTIONNEL)
+  // --- Rendre les articles projets cliquables
   // Ajoute data-url sur tes <article> :
   // <article data-url="https://github.com/...">...</article>
   $$(".projects article[data-url]").forEach((card) => {
@@ -242,5 +233,121 @@ if (toggleBtn && nav) {
   document.addEventListener("click", (e) => {
     const clickedInside = nav.contains(e.target) || toggleBtn.contains(e.target);
     if (!clickedInside) closeMenu();
+  });
+}
+
+// =========================
+//  FILTRAGE PROJETS + ÉTAT UI
+// =========================
+const state = {
+  activeFilter: "all",
+  selectedProjectTitle: null,
+  contactDraft: { name: "", email: "", message: "" }, // stockage temporaire
+};
+
+// --- Filtrage
+const filterButtons = document.querySelectorAll(".filter-btn");
+const projectCards = document.querySelectorAll(".projects article");
+
+function applyFilter(filter) {
+  state.activeFilter = filter;
+
+  // UI: bouton actif
+  filterButtons.forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.filter === filter);
+  });
+
+  // show/hide cartes
+  projectCards.forEach((card) => {
+    const tags = (card.dataset.tags || "").split(",").map(s => s.trim());
+    const match = filter === "all" || tags.includes(filter);
+    card.style.display = match ? "" : "none";
+  });
+}
+
+filterButtons.forEach((btn) => {
+  btn.addEventListener("click", () => applyFilter(btn.dataset.filter));
+});
+
+// --- Projet sélectionné (état simple)
+projectCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    projectCards.forEach(c => c.classList.remove("is-selected"));
+    card.classList.add("is-selected");
+
+    const title = card.querySelector("h3")?.textContent?.trim() || "Projet";
+    state.selectedProjectTitle = title;
+  });
+});
+
+// initial
+if (filterButtons.length) applyFilter("all");
+
+
+// =========================
+//  FORMULAIRE CONTACT (sans backend)
+//  - lecture valeurs
+//  - stockage dans state.contactDraft
+//  - validation simple
+//  - message succès/erreur
+// =========================
+const form = document.getElementById("contactForm");
+const formMsg = document.getElementById("formMsg");
+
+function setMsg(text, type) {
+  if (!formMsg) return;
+  formMsg.textContent = text;
+  formMsg.classList.remove("is-error", "is-success");
+  if (type) formMsg.classList.add(type);
+}
+
+function isValidEmail(email) {
+  // simple et suffisant pour un devoir
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+if (form) {
+  const nameEl = form.elements.namedItem("name");
+  const emailEl = form.elements.namedItem("email");
+  const messageEl = form.elements.namedItem("message");
+
+  // stockage temporaire en live
+  const syncDraft = () => {
+    state.contactDraft.name = (nameEl?.value || "").trim();
+    state.contactDraft.email = (emailEl?.value || "").trim();
+    state.contactDraft.message = (messageEl?.value || "").trim();
+  };
+
+  form.addEventListener("input", syncDraft);
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    syncDraft();
+
+    const { name, email, message } = state.contactDraft;
+
+    // validation simple
+    if (name.length < 2) {
+      setMsg("Erreur : le nom doit faire au moins 2 caractères.", "is-error");
+      nameEl?.focus();
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setMsg("Erreur : email invalide.", "is-error");
+      emailEl?.focus();
+      return;
+    }
+    if (message.length < 10) {
+      setMsg("Erreur : le message doit faire au moins 10 caractères.", "is-error");
+      messageEl?.focus();
+      return;
+    }
+
+    // succès (pas d'envoi backend)
+    setMsg("Message prêt ✅ (pas de backend, donc rien n’est envoyé).", "is-success");
+
+    // “reset” optionnel
+    form.reset();
+    state.contactDraft = { name: "", email: "", message: "" };
   });
 }
