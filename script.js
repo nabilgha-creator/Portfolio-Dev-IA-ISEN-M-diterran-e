@@ -248,26 +248,45 @@ const state = {
 // --- Filtrage
 const filterButtons = document.querySelectorAll(".filter-btn");
 const projectCards = document.querySelectorAll(".projects article");
+const skillCards = document.querySelectorAll(".skills > li");
+
 
 function applyFilter(filter) {
-  state.activeFilter = filter;
+  console.log("click filter:", filter);
 
-  // UI: bouton actif
-  filterButtons.forEach((btn) => {
+  // UI boutons
+  filterButtons.forEach(btn => {
     btn.classList.toggle("is-active", btn.dataset.filter === filter);
   });
 
-  // show/hide cartes
-  projectCards.forEach((card) => {
-    const tags = (card.dataset.tags || "").split(",").map(s => s.trim());
-    const match = filter === "all" || tags.includes(filter);
+  // Projets
+  projectCards.forEach(card => {
+    const tags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
+    const match = (filter === "all") || tags.includes(filter);
     card.style.display = match ? "" : "none";
+  });
+
+  // Skills (IA = Data ensemble)
+  const skillFilter = (filter === "ia") ? "data" : filter;
+
+  skillCards.forEach(li => {
+    const tags = (li.dataset.skillTags || "").split(",").map(s => s.trim()).filter(Boolean);
+    const match = (skillFilter === "all") || tags.includes(skillFilter);
+    li.style.display = match ? "" : "none";
   });
 }
 
-filterButtons.forEach((btn) => {
-  btn.addEventListener("click", () => applyFilter(btn.dataset.filter));
-});
+// listeners
+if (filterButtons.length) {
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => applyFilter(btn.dataset.filter));
+  });
+  applyFilter("all");
+}
+
+
+// init (optionnel mais conseillé)
+applyFilter("all");
 
 // --- Projet sélectionné (état simple)
 projectCards.forEach((card) => {
@@ -344,7 +363,7 @@ if (form) {
     }
 
     // succès 
-    
+
     setMsg("Message envoyé ✅.", "is-success");
 
     // “reset” optionnel
@@ -352,3 +371,4 @@ if (form) {
     state.contactDraft = { name: "", email: "", message: "" };
   });
 }
+
