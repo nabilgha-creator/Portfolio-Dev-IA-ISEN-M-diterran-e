@@ -482,3 +482,46 @@ desktop uniquement
 .form-msg.is-error{ color: #fca5a5; }
 .form-msg.is-success{ color: #86efac; }
 
+/* Formulaire : responsive */
+.contact-form{
+  width: 100%;
+  max-width: 520px; /* desktop */
+}
+
+/*éviter les débordements en grid */
+.contact-form input,
+.contact-form textarea{
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 520px){
+  .contact-form{
+    max-width: 100%;      /* mobile = toute la largeur dispo */
+  }
+
+  .contact-form button{
+    width: 100%;          /* bouton pleine largeur */
+  }
+}
+
+/* Liens icônes : on neutralise le style global des <a> */
+.contact-links a{
+  padding: 0;
+  border: none;
+  background: transparent;
+  margin-top: 0;
+}
+
+/* Mobile : on centre et on wrap si besoin */
+@media (max-width: 520px){
+  .contact-links{
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+.contact-form{
+  margin-top: 10px;
+  margin-inline: auto; /* centre sur desktop */
+}
