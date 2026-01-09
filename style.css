@@ -139,81 +139,6 @@ section p{
   .projects > h2{
     grid-column: 1 / -1;
   }
-
-  /* hero devient une colonne centrée */
-  .hero{
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 14px;
-    padding: 24px 16px 18px;
-    position: relative;
-  }
-
-  /* photo plus petite */
-  .profile-pic{
-    width: 96px;
-    height: 96px;
-    order: 1;
-  }
-
-  .hero-text{
-    order: 2;
-  }
-
-  /* nom/prénom adaptés */
-  .hero-text h1{
-    font-size: clamp(1.6rem, 8vw, 2.2rem);
-  }
-  .hero-text p{
-    font-size: 1rem;
-  }
-
-  /* bouton burger visible */
-  .nav-toggle{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,.03);
-    color: var(--text);
-    font-weight: 900;
-    cursor: pointer;
-    position: absolute;
-    top: 16px;
-    left: 16px;
-  }
-
-  /* menu caché par défaut */
-  .nav-links{
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    width: min(260px, 90vw);
-    padding: 14px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: rgba(15,23,42,.92);
-    box-shadow: 0 12px 30px rgba(0,0,0,.35);
-    position: absolute;
-    top: 68px;
-    left: 16px;
-    z-index: 999;
-  }
-}
-
-  /* menu ouvert */
-  .nav-links.is-open{
-    display: flex;
-  }
-
-  /* liens du menu un peu plus compacts */
-  .nav-links a{
-    width: 100%;
-    justify-content: center;
 }
 
 /* =========================
@@ -342,4 +267,128 @@ footer{
   text-align: center;
   padding: 20px;
   color: var(--muted);
+}
+
+/* =========================
+desktop uniquement
+========================= */
+@media (min-width: 760px){
+  .projects{
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+  }
+  .projects > h2{
+    grid-column: 1 / -1;
+  }
+}
+
+/* =========================
+   NAV + BURGER (propre)
+   - Desktop: menu normal discret
+   - Mobile: burger + dropdown
+========================= */
+
+/* Le menu est dans le header => positionnement propre */
+.hero{
+  position: relative;
+}
+
+/* Desktop (par défaut) : nav visible */
+.nav-links{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+
+  /* on la place en haut-gauche du hero sans casser le layout */
+  position: absolute;
+  top: 18px;
+  left: 20px;
+}
+
+/* IMPORTANT: on neutralise le style global a{} pour la nav */
+.nav-links a{
+  margin-top: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.14);
+  font-weight: 700;
+}
+
+/* hover léger */
+.nav-links a:hover{
+  background: rgba(255,255,255,.06);
+}
+
+/* Burger caché sur desktop */
+.nav-toggle{
+  display: none;
+}
+
+/* -------- Mobile (<= 760px) -------- */
+@media (max-width: 760px){
+
+  /* Burger visible */
+  .nav-toggle{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.03);
+    color: var(--text);
+    font-size: 22px;
+    cursor: pointer;
+
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1001;
+  }
+
+  /* Menu dropdown caché */
+  .nav-links{
+    display: none;              /* caché par défaut */
+    flex-direction: column;
+    gap: 10px;
+
+    position: absolute;
+    top: 68px;
+    left: 16px;
+
+    width: min(240px, 86vw);
+    padding: 12px;
+    border-radius: 14px;
+
+    border: 1px solid var(--border);
+    background: rgba(15,23,42,.92);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    z-index: 1000;
+  }
+
+  /* ouvert via JS */
+  .nav-links.is-open{
+    display: flex;
+  }
+
+  /* liens du menu en pleine largeur */
+  .nav-links a{
+    width: 100%;
+    justify-content: center;
+
+    /* même neutralisation du style global a{} */
+    margin-top: 0;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.14);
+  }
+
+  .nav-links a:hover{
+    background: rgba(255,255,255,.08);
+  }
 }
