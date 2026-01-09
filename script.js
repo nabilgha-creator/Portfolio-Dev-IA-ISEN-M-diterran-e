@@ -212,3 +212,35 @@
     });
   });
 })();
+
+// --- Burger menu (mobile)
+const toggleBtn = document.querySelector(".nav-toggle");
+const nav = document.querySelector("#site-nav");
+
+if (toggleBtn && nav) {
+  const closeMenu = () => {
+    nav.classList.remove("is-open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+  };
+
+  toggleBtn.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    toggleBtn.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // Fermer quand on clique un lien du menu
+  nav.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", closeMenu);
+  });
+
+  // Fermer avec Echap
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Fermer si clic en dehors
+  document.addEventListener("click", (e) => {
+    const clickedInside = nav.contains(e.target) || toggleBtn.contains(e.target);
+    if (!clickedInside) closeMenu();
+  });
+}
