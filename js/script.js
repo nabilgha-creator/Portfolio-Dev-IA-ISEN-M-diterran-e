@@ -1,374 +1,212 @@
-(() => {
-  "use strict";
+/*
+  STATE
+*/
+let activeProjectFilter = "all"
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-
-  // --- CSS injecté pour les effets (reveal / toast / top button)
-  const injectedCSS = `
-    .js-reveal{
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
-    .js-reveal.is-visible{
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .js-toast{
-      position: fixed;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%);
-      background: rgba(17, 24, 39, .92);
-      border: 1px solid rgba(255,255,255,.12);
-      color: #e5e7eb;
-      padding: 10px 14px;
-      border-radius: 12px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-      font-weight: 700;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .2s ease, transform .2s ease;
-    }
-    .js-toast.is-on{
-      opacity: 1;
-      transform: translateX(-50%) translateY(-4px);
-    }
-
-    .js-topbtn{
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(96,165,250,.14);
-      color: #e5e7eb;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(0,0,0,.25);
-      z-index: 9999;
-      opacity: 0;
-      transform: translateY(6px);
-      pointer-events: none;
-      transition: opacity .2s ease, transform .2s ease;
-    }
-    .js-topbtn.is-on{
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .js-topbtn:focus{
-      outline: 2px solid rgba(96,165,250,.55);
-      outline-offset: 3px;
-    }
-  `;
-  const styleEl = document.createElement("style");
-  styleEl.textContent = injectedCSS;
-  document.head.appendChild(styleEl);
-
-  // --- Toast
-  const toast = document.createElement("div");
-  toast.className = "js-toast";
-  toast.setAttribute("role", "status");
-  toast.setAttribute("aria-live", "polite");
-  document.body.appendChild(toast);
-
-  let toastTimer = null;
-  const showToast = (msg) => {
-    toast.textContent = msg;
-    toast.classList.add("is-on");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("is-on"), 1400);
-  };
-
-  // --- Année auto 
-  // Si tu mets <span data-year></span> dans ton footer
-  const yearTarget = $("[data-year]");
-  if (yearTarget) yearTarget.textContent = String(new Date().getFullYear());
-
-  // --- Reveal au scroll 
-  // Tes sections : <main> contient plusieurs <section>
-  // Projets : <section class="projects"> avec <article>
-  // Compétences : <section class="skills-section"> avec <ul class="skills"> etc.
-  const revealTargets = [
-    ...$$("main > section"),          // sections principales du main
-    ...$$(".projects article"),       // cartes projets
-    ...$$(".skills > li"),            // catégories skills
-    ...$$(".contact-links a"),        // icônes contact
-  ];
-
- if ("IntersectionObserver" in window && revealTargets.length) {
-  revealTargets.forEach((el) => el.classList.add("js-reveal"));
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-        } else {
-          entry.target.classList.remove("is-visible"); // <-- permet de rejouer
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
-
-  revealTargets.forEach((el) => io.observe(el));
+let contactFormState = {
+  name: "",
+  email: "",
+  message: "",
 }
 
+/*
+  DOM
+*/
+const navToggle = document.querySelector(".nav-toggle")
+const siteNav = document.getElementById("site-nav")
+const navAnchors = siteNav ? Array.from(siteNav.querySelectorAll("a")) : []
 
-  // --- Rendre les articles projets cliquables
-  // Ajoute data-url sur tes <article> :
-  // <article data-url="https://github.com/...">...</article>
-  $$(".projects article[data-url]").forEach((card) => {
-    card.style.cursor = "pointer";
-    card.tabIndex = 0;
-    card.setAttribute("role", "link");
-    card.setAttribute("aria-label", "Ouvrir le projet");
+const filterButtons = Array.from(document.querySelectorAll(".filter-btn"))
+const projectsSection = document.getElementById("projects")
+const projectCards = projectsSection
+  ? Array.from(projectsSection.querySelectorAll("article[data-url]"))
+  : []
 
-    const open = () => {
-      const url = card.getAttribute("data-url");
-      if (!url) return;
-      window.open(url, "_blank", "noopener,noreferrer");
-    };
+const contactForm = document.getElementById("contactForm")
+const formMsg = document.getElementById("formMsg")
 
-    card.addEventListener("click", (e) => {
-      // Si tu as un <a> dans la carte, on le laisse fonctionner
-      if (e.target && e.target.closest && e.target.closest("a")) return;
-      open();
-    });
+const yearSpan = document.querySelector("[data-year]")
 
-    card.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        open();
-      }
-    });
-  });
-
-  // --- Bouton "Retour en haut"
-  const topBtn = document.createElement("button");
-  topBtn.type = "button";
-  topBtn.className = "js-topbtn";
-  topBtn.setAttribute("aria-label", "Retour en haut");
-  topBtn.textContent = "↑";
-  document.body.appendChild(topBtn);
-
-  const toggleTopBtn = () => {
-    if (window.scrollY > 450) topBtn.classList.add("is-on");
-    else topBtn.classList.remove("is-on");
-  };
-
-  window.addEventListener("scroll", toggleTopBtn, { passive: true });
-  toggleTopBtn();
-
-  topBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  // --- Sécurité : ouvrir les liens externes en mode safe (sans casser ton HTML)
-  // Tu as déjà target="_blank". On ajoute rel si absent.
-  $$('a[target="_blank"]').forEach((a) => {
-    const rel = (a.getAttribute("rel") || "").toLowerCase();
-    if (!rel.includes("noopener") || !rel.includes("noreferrer")) {
-      a.setAttribute("rel", "noopener noreferrer");
-    }
-  });
-
-  // --- Petite animation click sur icônes contact (feedback)
-  $$(".contact-links a").forEach((a) => {
-    a.addEventListener("click", () => showToast("Ouverture…"));
-  });
-
-  // --- Smooth scroll (OPTIONNEL)
-  // Actif seulement si un jour tu ajoutes des ancres type <a href="#projects">
-  $$('a[href^="#"]').forEach((a) => {
-    a.addEventListener("click", (e) => {
-      const href = a.getAttribute("href");
-      if (!href || href === "#") return;
-
-      const id = href.slice(1);
-      const target = document.getElementById(id);
-      if (!target) return;
-
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-      history.pushState(null, "", href);
-    });
-  });
-})();
-
-// --- Burger menu (mobile)
-const toggleBtn = document.querySelector(".nav-toggle");
-const nav = document.querySelector("#site-nav");
-
-if (toggleBtn && nav) {
-  const closeMenu = () => {
-    nav.classList.remove("is-open");
-    toggleBtn.setAttribute("aria-expanded", "false");
-  };
-
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("is-open");
-    toggleBtn.setAttribute("aria-expanded", String(isOpen));
-  });
-
-  // Fermer quand on clique un lien du menu
-  nav.querySelectorAll("a").forEach((a) => {
-    a.addEventListener("click", closeMenu);
-  });
-
-  // Fermer avec Echap
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeMenu();
-  });
-
-  // Fermer si clic en dehors
-  document.addEventListener("click", (e) => {
-    const clickedInside = nav.contains(e.target) || toggleBtn.contains(e.target);
-    if (!clickedInside) closeMenu();
-  });
+/*
+  HELPERS
+*/
+function setNavOpen(isOpen) {
+  if (!navToggle || !siteNav) return
+  navToggle.setAttribute("aria-expanded", String(isOpen))
+  siteNav.classList.toggle("is-open", isOpen) // CSS: .nav-links.is-open { display:flex; }
 }
 
-// =========================
-//  FILTRAGE PROJETS + ÉTAT UI
-// =========================
-const state = {
-  activeFilter: "all",
-  selectedProjectTitle: null,
-  contactDraft: { name: "", email: "", message: "" }, // stockage temporaire
-};
+function setFormMessage(text, type) {
+  if (!formMsg) return
+  formMsg.textContent = text
 
-// --- Filtrage
-const filterButtons = document.querySelectorAll(".filter-btn");
-const projectCards = document.querySelectorAll(".projects article");
-const skillCards = document.querySelectorAll(".skills > li");
-
-
-function applyFilter(filter) {
-  console.log("click filter:", filter);
-
-  // UI boutons
-  filterButtons.forEach(btn => {
-    btn.classList.toggle("is-active", btn.dataset.filter === filter);
-  });
-
-  // Projets
-  projectCards.forEach(card => {
-    const tags = (card.dataset.tags || "").split(",").map(s => s.trim()).filter(Boolean);
-    const match = (filter === "all") || tags.includes(filter);
-    card.style.display = match ? "" : "none";
-  });
-
-  // Skills (IA = Data ensemble)
-  const skillFilter = (filter === "ia") ? "data" : filter;
-
-  skillCards.forEach(li => {
-    const tags = (li.dataset.skillTags || "").split(",").map(s => s.trim()).filter(Boolean);
-    const match = (skillFilter === "all") || tags.includes(skillFilter);
-    li.style.display = match ? "" : "none";
-  });
+  // CSS attend: .form-msg.is-error / .form-msg.is-success
+  formMsg.classList.remove("is-error", "is-success")
+  if (type === "error") formMsg.classList.add("is-error")
+  if (type === "success") formMsg.classList.add("is-success")
 }
 
-// listeners
-if (filterButtons.length) {
-  filterButtons.forEach(btn => {
-    btn.addEventListener("click", () => applyFilter(btn.dataset.filter));
-  });
-  applyFilter("all");
+function getProjectCategory(article) {
+  // optionnel si tu ajoutes data-category="data|web" plus tard
+  const explicit = article.getAttribute("data-category")
+  if (explicit) return explicit
+
+  // fallback simple (vu que ton HTML n’a pas data-category)
+  const text = (article.textContent || "").toLowerCase()
+
+  if (
+    text.includes("etl") ||
+    text.includes("dataset") ||
+    text.includes("données") ||
+    text.includes("data") ||
+    text.includes("ia")
+  ) {
+    return "data"
+  }
+
+  if (
+    text.includes("html") ||
+    text.includes("css") ||
+    text.includes("flexbox") ||
+    text.includes("web")
+  ) {
+    return "web"
+  }
+
+  return "all"
 }
 
-
-// init (optionnel mais conseillé)
-applyFilter("all");
-
-// --- Projet sélectionné (état simple)
-projectCards.forEach((card) => {
-  card.addEventListener("click", () => {
-    projectCards.forEach(c => c.classList.remove("is-selected"));
-    card.classList.add("is-selected");
-
-    const title = card.querySelector("h3")?.textContent?.trim() || "Projet";
-    state.selectedProjectTitle = title;
-  });
-});
-
-// initial
-if (filterButtons.length) applyFilter("all");
-
-
-// =========================
-//  FORMULAIRE CONTACT (sans backend)
-//  - lecture valeurs
-//  - stockage dans state.contactDraft
-//  - validation simple
-//  - message succès/erreur
-// =========================
-const form = document.getElementById("contactForm");
-const formMsg = document.getElementById("formMsg");
-
-function setMsg(text, type) {
-  if (!formMsg) return;
-  formMsg.textContent = text;
-  formMsg.classList.remove("is-error", "is-success");
-  if (type) formMsg.classList.add(type);
+/*
+  RENDER
+*/
+function renderYear() {
+  if (yearSpan) yearSpan.textContent = String(new Date().getFullYear())
 }
 
-function isValidEmail(email) {
-  // simple et suffisant pour un devoir
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+function renderProjectFilters() {
+  filterButtons.forEach((btn) => {
+    const value = btn.dataset.filter || "all"
+    btn.classList.toggle("is-active", value === activeProjectFilter)
+  })
 }
 
-if (form) {
-  const nameEl = form.elements.namedItem("name");
-  const emailEl = form.elements.namedItem("email");
-  const messageEl = form.elements.namedItem("message");
+function renderProjects() {
+  projectCards.forEach((article) => {
+    const category = getProjectCategory(article)
+    const show =
+      activeProjectFilter === "all" || category === activeProjectFilter
 
-  // stockage temporaire en live
-  const syncDraft = () => {
-    state.contactDraft.name = (nameEl?.value || "").trim();
-    state.contactDraft.email = (emailEl?.value || "").trim();
-    state.contactDraft.message = (messageEl?.value || "").trim();
-  };
+    article.hidden = !show
+  })
+}
 
-  form.addEventListener("input", syncDraft);
+function updateProjectsUI() {
+  renderProjectFilters()
+  renderProjects()
+}
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    syncDraft();
+/*
+  EVENTS
+*/
+function setupBurgerMenu() {
+  if (!navToggle || !siteNav) return
 
-    const { name, email, message } = state.contactDraft;
+  // initial: fermé (important)
+  setNavOpen(false)
 
-    // validation simple
-    if (name.length < 2) {
-      setMsg("Erreur : le nom doit faire au moins 2 caractères.", "is-error");
-      nameEl?.focus();
-      return;
-    }
-    if (!isValidEmail(email)) {
-      setMsg("Erreur : email invalide.", "is-error");
-      emailEl?.focus();
-      return;
-    }
-    if (message.length < 10) {
-      setMsg("Erreur : le message doit faire au moins 10 caractères.", "is-error");
-      messageEl?.focus();
-      return;
+  navToggle.addEventListener("click", () => {
+    const isOpen = navToggle.getAttribute("aria-expanded") === "true"
+    setNavOpen(!isOpen)
+  })
+
+  // fermer quand on clique sur un lien
+  navAnchors.forEach((a) => {
+    a.addEventListener("click", () => setNavOpen(false))
+  })
+}
+
+function setupProjectFilters() {
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeProjectFilter = btn.dataset.filter || "all"
+      updateProjectsUI()
+    })
+  })
+}
+
+function setupProjectCards() {
+  projectCards.forEach((article) => {
+    article.style.cursor = "pointer"
+
+    article.addEventListener("click", () => {
+      // highlight (CSS: .projects article.is-selected)
+      projectCards.forEach((a) => a.classList.remove("is-selected"))
+      article.classList.add("is-selected")
+
+      // open link
+      const url = article.getAttribute("data-url")
+      if (url) window.open(url, "_blank", "noopener,noreferrer")
+    })
+  })
+}
+
+function validateContactForm(data) {
+  if (!data.name || !data.email || !data.message) {
+    return "Tous les champs sont requis."
+  }
+
+  if (data.name.length < 2) {
+    return "Le nom doit faire au moins 2 caractères."
+  }
+
+  if (data.message.length < 10) {
+    return "Le message doit faire au moins 10 caractères."
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(data.email)) {
+    return "Veuillez entrer une adresse email valide."
+  }
+
+  return null
+}
+
+function setupContactForm() {
+  if (!contactForm || !formMsg) return
+
+  contactForm.addEventListener("submit", (event) => {
+    event.preventDefault()
+
+    const nameInput = contactForm.querySelector('input[name="name"]')
+    const emailInput = contactForm.querySelector('input[name="email"]')
+    const messageInput = contactForm.querySelector('textarea[name="message"]')
+
+    contactFormState.name = (nameInput?.value || "").trim()
+    contactFormState.email = (emailInput?.value || "").trim()
+    contactFormState.message = (messageInput?.value || "").trim()
+
+    const error = validateContactForm(contactFormState)
+
+    if (error) {
+      setFormMessage(error, "error")
+      return
     }
 
-    // succès 
+    setFormMessage("Votre message a bien été pris en compte.", "success")
 
-    setMsg("Message envoyé ✅.", "is-success");
-
-    // “reset” optionnel
-    form.reset();
-    state.contactDraft = { name: "", email: "", message: "" };
-  });
+    contactForm.reset()
+    contactFormState = { name: "", email: "", message: "" }
+  })
 }
 
+/*
+  INIT
+*/
+renderYear()
+setupBurgerMenu()
+
+setupProjectFilters()
+setupProjectCards()
+updateProjectsUI()
+
+setupContactForm()
