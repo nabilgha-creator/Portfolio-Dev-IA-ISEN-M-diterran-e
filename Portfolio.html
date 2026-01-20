@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio – Nabil</title>
 
   <!-- Lien vers le CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <!--Police téléchargé sur Googlefont-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
 
 </head>
 
 <body>
 
   <!-- EN-TÊTE -->
- <header class="hero">
+  <header class="hero">
     <button class="nav-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="Ouvrir le menu">
-    ☰
+      ☰
     </button>
 
     <nav id="site-nav" class="nav-links">
 
-  <a href="#about">À propos</a>
-  <a href="#projects">Projets</a>
-  <a href="#skills">Compétences</a>
-  <a href="#contact">Contact</a>
-</nav>
+      <a href="#about">À propos</a>
+      <a href="#projects">Projets</a>
+      <a href="#skills">Compétences</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-  <div class="hero-text">
-    <h1>Nabil Ghadab</h1>
-    <p>Développeur IA / Data</p>
-  </div>
+    <div class="hero-text">
+      <h1>Nabil Ghadab</h1>
+      <p>Développeur IA / Data</p>
+    </div>
 
-  <img src="images/1718961983892.jpg" alt="Photo de Nabil" class="profile-pic">
-</header>
+    <img src="images/1718961983892.jpg" alt="Photo de Nabil" class="profile-pic">
+  </header>
 
 
 
@@ -45,7 +47,7 @@
   <main>
 
     <!-- SECTION : À propos -->
-    <section  id="about">
+    <section id="about">
       <h2>À propos</h2>
       <p>
         Etudiant en développement IA, avec un intérêt pour l’ETL,
@@ -54,19 +56,19 @@
     </section>
 
     <!-- SECTION : Projets -->
-    <section  class="projects" id="projects">
+    <section class="projects" id="projects">
       <h2>Projets</h2>
 
-       <div class="project-filters" role="tablist" aria-label="Filtrer les projets">
-    <button class="filter-btn is-active" type="button" data-filter="all">Tous</button>
-    <button class="filter-btn" type="button" data-filter="data">Data/IA</button>
-    <button class="filter-btn" type="button" data-filter="web">Web</button>
-     </div>
+      <div class="project-filters" role="tablist" aria-label="Filtrer les projets">
+        <button class="filter-btn is-active" type="button" data-filter="all">Tous</button>
+        <button class="filter-btn" type="button" data-filter="data">Data/IA</button>
+        <button class="filter-btn" type="button" data-filter="web">Web</button>
+      </div>
 
       <article data-category="data" data-url="https://github.com/nabilgha-creator">
         <h3>Analyse ETL – Dataset</h3>
         <p>Extraction,Nettoyage, Transformation et Visualisation de données. <br>
-        sources des données: Wikipédia, kaggle, ChatGPT, Google</p>
+          sources des données: Wikipédia, kaggle, ChatGPT, Google</p>
       </article>
 
       <article data-category="web" data-url="https://github.com/nabilgha-creator">
@@ -77,74 +79,74 @@
     </section>
 
     <!-- SECTION : Compétences -->
-    <section  class="skills-section" id="skills">
+    <section class="skills-section" id="skills">
       <h2>Compétences</h2>
 
       <ul class="skills">
         <li data-skill-tags="data,ia">
-            Python
-            <ul>
-                 <li>Pandas</li>
-                 <li>Numpy</li>
-                 <li>BeautifulSoup</li>
-                 <li>Requests</li>
-            </ul>
+          Python
+          <ul>
+            <li>Pandas</li>
+            <li>Numpy</li>
+            <li>BeautifulSoup</li>
+            <li>Requests</li>
+          </ul>
         </li>
 
         <li data-skill-tags="data,ia">
-            Data Viz
-        <ul>
+          Data Viz
+          <ul>
             <li>Matplotlib</li>
             <li>Seaborn</li>
-        </ul>
+          </ul>
         </li>
 
         <li data-skill-tags="web">HTML / CSS</li>
         <li data-skill-tags="data,ia">Office 365 / Power BI</li>
-        </ul>
+      </ul>
 
     </section>
 
     <!-- SECTION : Contact -->
-   
+
     <section id="contact">
-        <h2>Contact</h2>
-        
-        <!--formulaire-->
-        <form id="contactForm" class="contact-form" novalidate>
-    <label>
-      Nom
-      <input type="text" name="name" placeholder="Ton nom" required minlength="2">
-    </label>
+      <h2>Contact</h2>
 
-    <label>
-      Email
-      <input type="email" name="email" placeholder="ton@email.com" required>
-    </label>
+      <!--formulaire-->
+      <form id="contactForm" class="contact-form" novalidate>
+        <label>
+          Nom
+          <input type="text" name="name" placeholder="Ton nom" required minlength="2">
+        </label>
 
-    <label>
-      Message
-      <textarea name="message" rows="5" placeholder="Ton message..." required minlength="10"></textarea>
-    </label>
+        <label>
+          Email
+          <input type="email" name="email" placeholder="ton@email.com" required>
+        </label>
 
-    <button type="submit">Envoyer</button>
+        <label>
+          Message
+          <textarea name="message" rows="5" placeholder="Ton message..." required minlength="10"></textarea>
+        </label>
 
-    <!-- zone de retour -->
-    <p id="formMsg" class="form-msg" aria-live="polite"></p>
-  </form>
+        <button type="submit">Envoyer</button>
 
-        <div class="contact-links">
-            <a href="https://www.linkedin.com/in/nabilgha" target="_blank">
-            <img src="images/linkedin.png" alt="LinkedIn">
-         </a>
+        <!-- zone de retour -->
+        <p id="formMsg" class="form-msg" aria-live="polite"></p>
+      </form>
 
-            <a href="https://github.com/nabilgha-creator" target="_blank">
-            <img src="images/GitHub-Logo.png" alt="GitHub">
-            </a>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/nabilgha" target="_blank">
+          <img src="images/linkedin.png" alt="LinkedIn">
+        </a>
 
-            <a href="mailto:nabil.gha@gmail.com" target="_blank">
-                <img src="images/téléchargé.png" alt="gmail"></a>
-        </div>
+        <a href="https://github.com/nabilgha-creator" target="_blank">
+          <img src="images/GitHub-Logo.png" alt="GitHub">
+        </a>
+
+        <a href="mailto:nabil.gha@gmail.com" target="_blank">
+          <img src="images/téléchargé.png" alt="gmail"></a>
+      </div>
 
 
     </section>
@@ -152,13 +154,14 @@
   </main>
 
   <!-- PIED DE PAGE -->
-  
-    <footer>
-  <p>© <span data-year></span> – Nabil Ghadab, Développeur IA</p>
-</footer>
 
-  
- <script defer src="script.js"></script>
+  <footer>
+    <p>© <span data-year></span> – Nabil Ghadab, Développeur IA</p>
+  </footer>
+
+
+  <script defer src="js/script.js"></script>
 
 </body>
+
 </html>
